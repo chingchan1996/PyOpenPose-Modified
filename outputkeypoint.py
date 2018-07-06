@@ -84,7 +84,7 @@ def run( _filename, _show, _standard):
     delay = {True: 0, False: 1}
 
     lg.info("  Entering main Loop.")
-
+    ret, frame = cap.read()
     frameCounter = 1
     while True:
         start_time = time.time()
@@ -97,7 +97,11 @@ def run( _filename, _show, _standard):
             break
 
         t = time.time()
-        op.detectPose(rgb)
+        try:
+            op.detectPose(rgb)
+        except Exception as e:
+            break
+
         t = time.time() - t
         op_fps = 1.0 / t
         res = op.render(rgb)
@@ -123,13 +127,12 @@ def run( _filename, _show, _standard):
 
         if _show:
             cv2.imshow("OpenPose result", res)
+            key = cv2.waitKey(delay[paused])
+            if key & 255 == ord('p'):
+                paused = not paused
 
-        key = cv2.waitKey(delay[paused])
-        if key & 255 == ord('p'):
-            paused = not paused
-
-        if key & 255 == ord('q'):
-            break
+            if key & 255 == ord('q'):
+                break
 
         actual_fps = 1.0 / (time.time() - start_time)
         frameCounter = frameCounter + 1
@@ -142,7 +145,6 @@ def run( _filename, _show, _standard):
 
 if __name__ == '__main__':
 
-
     if sys.argv[1] == None:
         filename = input('Enter the file name with extension:\n')
     else:
@@ -151,7 +153,13 @@ if __name__ == '__main__':
     if sys.argv[2] == None:
         show = True
     else:
-        show = bool(sys.argv[2])
+        if sys.argv[2] == 'False':
+            show = False
+        else:
+            show = True 
+
+    print(show)
+    input()
 
     if sys.argv[3] == None:
         standard = 0.5
