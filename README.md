@@ -14,3 +14,4 @@ A modified version of the source code from FORTH-ModelBasedTracker/PyOpenPose. A
 
 # outputkeypoint.py
 A python script that output the 18-key points of each person.
+Ex."python3 outputkeypoint.py test2.mp4 False 0.5"
