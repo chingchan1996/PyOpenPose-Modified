@@ -156,14 +156,11 @@ if __name__ == '__main__':
         if sys.argv[2] == 'False':
             show = False
         else:
-            show = True 
-
-    print(show)
-    input()
+            show = True
 
     if sys.argv[3] == None:
         standard = 0.5
     else:
         standard = float(sys.argv[3])
-        
+
     run( filename, show, standard)
